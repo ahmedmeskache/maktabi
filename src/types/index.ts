@@ -14,8 +14,8 @@ export interface Book {
   location?: string
   tags: string[]
   totalLoans?: number
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string
 }
 
 export interface Member {
@@ -26,34 +26,34 @@ export interface Member {
   email: string
   phone?: string
   address?: string
-  dateOfBirth?: Date
+  dateOfBirth?: string
   membershipType: 'student' | 'standard' | 'premium' | 'staff'
-  membershipStart: Date
-  membershipEnd: Date
+  membershipStart: string
+  membershipEnd: string
   status: 'active' | 'expired' | 'suspended' | 'pending'
-  avatarUrl?: string
+  avatarUrl?: string | null
   qrCode?: string
   totalLoans: number
   activeLoans: number
   totalFines: number
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string
 }
 
 export interface Loan {
   id: string
   bookId: string
   memberId: string
-  loanDate: Date
-  dueDate: Date
-  returnDate?: Date
+  loanDate: string
+  dueDate: string
+  returnDate?: string
   status: 'active' | 'returned' | 'overdue' | 'lost'
   fineAmount: number
   finePaid: boolean
   renewalCount: number
   notes?: string
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string
   // Relations
   book?: Book
   member?: Member
@@ -63,13 +63,13 @@ export interface Reservation {
   id: string
   bookId: string
   memberId: string
-  reservationDate: Date
-  expiryDate: Date
+  reservationDate: string
+  expiryDate: string
   status: 'pending' | 'ready' | 'cancelled' | 'completed'
   position: number
-  notifiedAt?: Date
-  createdAt: Date
-  updatedAt: Date
+  notifiedAt?: string
+  createdAt: string
+  updatedAt: string
   book?: Book
   member?: Member
 }
@@ -81,7 +81,7 @@ export interface Category {
   color: string
   icon?: string
   bookCount: number
-  createdAt: Date
+  createdAt: string
 }
 
 export interface StatsOverview {

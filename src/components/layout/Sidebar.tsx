@@ -42,7 +42,7 @@ export function Sidebar() {
   return (
     <>
       <button
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-xl bg-white dark:bg-slate-800 shadow-lg"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-xl bg-white/80 dark:bg-[#221b12]/80 backdrop-blur-xl border border-[var(--color-border-primary)]/60 shadow-lg"
         onClick={toggleSidebar}
         aria-label={sidebarOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
         aria-expanded={sidebarOpen}
@@ -58,12 +58,12 @@ export function Sidebar() {
             exit={{ x: window.innerWidth < 1024 ? '-100%' : 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             className={cn(
-              'fixed lg:relative inset-y-0 left-0 z-40 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-all duration-300 flex flex-col',
+              'fixed lg:relative inset-y-0 left-0 z-40 bg-white/55 dark:bg-[#221b12]/55 backdrop-blur-2xl border-r border-[var(--color-border-primary)]/60 transition-all duration-300 flex flex-col',
               collapsed ? 'w-20' : 'w-64',
               window.innerWidth < 1024 && !sidebarOpen ? '-translate-x-full' : 'translate-x-0'
             )}
           >
-            <div className="flex h-16 items-center justify-between px-4 border-b border-slate-200 dark:border-slate-800">
+            <div className="flex h-16 items-center justify-between px-4 border-b border-[var(--color-border-primary)]/60">
               <Link to="/" className="flex items-center gap-2" aria-label="Maktabi - Accueil">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center">
                   <BookMarked className="w-5 h-5 text-white" />
@@ -119,7 +119,7 @@ export function Sidebar() {
               })}
             </nav>
 
-            <div className="p-3 border-t border-slate-200 dark:border-slate-800">
+            <div className="p-3 border-t border-[var(--color-border-primary)]/60">
               <div className={cn('px-3 py-2.5 rounded-xl text-body-sm', collapsed && 'text-center')}>
                 <p className="font-medium text-slate-900 dark:text-white truncate">Version 1.0.0</p>
                 <p className="text-slate-500 dark:text-slate-400 truncate">Maktabi Library System</p>
@@ -131,7 +131,7 @@ export function Sidebar() {
 
       {sidebarOpen && window.innerWidth < 1024 && (
         <div
-          className="fixed inset-0 z-30 bg-slate-900/50 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-30 bg-[#17120c]/60 backdrop-blur-sm lg:hidden"
           onClick={() => setSidebarOpen(false)}
           aria-hidden="true"
         />

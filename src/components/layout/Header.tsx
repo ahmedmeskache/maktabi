@@ -1,14 +1,16 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { useUIStore } from '@/store'
 import { Button } from '@/components/ui/Button'
 import { UserMenu } from '@/components/ui/Dropdown'
 import { Search, Bell, Sun, Moon, Command } from 'lucide-react'
+import { toast } from 'sonner'
 
 export function Header() {
-  const { theme, setTheme, toggleCommandPalette } = useUIStore()
+  const { theme, setTheme } = useUIStore()
+  const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
   const [showNotifications, setShowNotifications] = useState(false)
   const [, setShowProfile] = useState(false)
@@ -20,7 +22,7 @@ export function Header() {
     function handleKeyDown(event: KeyboardEvent) {
       if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
         event.preventDefault()
-        toggleCommandPalette()
+        searchRef.current?.focus()
       }
       if (event.key === 'Escape') {
         setShowNotifications(false)
@@ -29,7 +31,7 @@ export function Header() {
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [toggleCommandPalette])
+  }, [])
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -51,25 +53,25 @@ export function Header() {
   ]
 
   return (
-    <header className="sticky top-0 z-30 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800">
+    <header className="sticky top-0 z-30 bg-white/55 dark:bg-[#221b12]/55 backdrop-blur-2xl border-b border-[var(--color-border-primary)]/60">
       <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4 flex-1 min-w-0">
-          <div className="relative hidden sm:block w-80 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" />
-            <input
-              ref={searchRef}
-              type="search"
-              placeholder="Rechercher livres, adhérents... (⌘K)"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-100 dark:bg-slate-800 border-0 rounded-xl text-body-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-brand-500 focus:bg-white dark:focus:bg-slate-800 transition-all"
-              aria-label="Recherche globale"
-            />
-            <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 px-2 py-1 text-body-xs text-slate-400 bg-slate-200 dark:bg-slate-700 rounded">
-              <Command className="w-3 h-3" />
-              <span>K</span>
-            </kbd>
-          </div>
+            <form className="relative hidden sm:block w-80 max-w-md" onSubmit={(e) => { e.preventDefault(); const q = searchQuery.trim(); navigate(q ? `/books?q=${encodeURIComponent(q)}` : '/books') }}>
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" />
+              <input
+                ref={searchRef}
+                type="search"
+                placeholder="Rechercher livres, adhérents... (⌘K)"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-100 dark:bg-slate-800 border-0 rounded-xl text-body-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-brand-500 focus:bg-white dark:focus:bg-slate-800 transition-all"
+                aria-label="Recherche globale"
+              />
+              <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 px-2 py-1 text-body-xs text-slate-400 bg-slate-200 dark:bg-slate-700 rounded">
+                <Command className="w-3 h-3" />
+                <span>K</span>
+              </kbd>
+            </form>
         </div>
 
         <div className="flex items-center gap-2 ml-4">
@@ -101,20 +103,20 @@ export function Header() {
                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  className="absolute right-0 mt-2 w-80 sm:w-96 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden"
+                  className="absolute right-0 mt-2 w-80 sm:w-96 bg-white/90 dark:bg-[#221b12]/90 backdrop-blur-2xl rounded-xl border border-[var(--color-border-primary)] shadow-xl overflow-hidden"
                   role="region"
                   aria-label="Notifications"
                 >
-                  <div className="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                  <div className="p-4 border-b border-[var(--color-border-primary)] flex items-center justify-between">
                     <h3 className="font-semibold text-slate-900 dark:text-white">Notifications</h3>
-                    <Button variant="ghost" size="sm" className="text-body-xs">Tout marquer lu</Button>
+                    <Button variant="ghost" size="sm" className="text-body-xs" onClick={() => { toast.success('Toutes les notifications sont marquées comme lues'); setShowNotifications(false) }}>Tout marquer lu</Button>
                   </div>
                   <div className="max-h-96 overflow-y-auto">
                     {notifications.map((notification) => (
                       <div
                         key={notification.id}
                         className={cn(
-                          'p-4 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors',
+                          'p-4 border-b border-[var(--color-border-primary)]/60 hover:bg-[var(--color-bg-tertiary)] transition-colors',
                           !notification.read && 'bg-brand-50/50 dark:bg-brand-900/10'
                         )}
                       >
@@ -131,8 +133,8 @@ export function Header() {
                       </div>
                     ))}
                   </div>
-                  <div className="p-3 border-t border-slate-200 dark:border-slate-700 text-center">
-                    <Link to="/notifications" className="text-body-sm text-brand-600 dark:text-brand-400 hover:underline">
+                  <div className="p-3 border-t border-[var(--color-border-primary)] text-center">
+                    <Link to="/notifications" onClick={() => setShowNotifications(false)} className="text-body-sm text-brand-600 dark:text-brand-400 hover:underline">
                       Voir toutes les notifications
                     </Link>
                   </div>
@@ -158,9 +160,11 @@ export function Header() {
                 email: 'admin@maktabi.fr',
                 avatar: undefined,
               }}
-              onProfile={() => { setShowProfile(false) }}
-              onSettings={() => { setShowProfile(false) }}
-              onLogout={() => { setShowProfile(false) }}
+              onProfile={() => { setShowProfile(false); navigate('/profile') }}
+              onNotifications={() => { setShowProfile(false); navigate('/notifications') }}
+              onContact={() => { setShowProfile(false); navigate('/contact') }}
+              onSettings={() => { setShowProfile(false); navigate('/settings') }}
+              onLogout={() => { setShowProfile(false); toast.success('Vous avez été déconnecté'); navigate('/') }}
             />
           </div>
         </div>

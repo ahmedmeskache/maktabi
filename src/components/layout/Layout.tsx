@@ -8,7 +8,7 @@ export function Layout() {
   const { sidebarOpen } = useUIStore()
 
   return (
-    <div className="min-h-screen bg-background-light dark:bg-background-dark flex">
+    <div className="min-h-screen bg-transparent flex">
       <Sidebar />
       <div className={cn('flex-1 flex flex-col min-w-0 lg:ml-64', sidebarOpen && 'lg:ml-64')}>
         <Header />

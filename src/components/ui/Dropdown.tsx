@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, ReactNode } from 'react'
-import { ChevronDown, Check, User, Settings, LogOut } from 'lucide-react'
+import { ChevronDown, Check, User, Settings, LogOut, Bell, Phone } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from './Button'
 import { Portal } from './Portal'
@@ -85,7 +85,7 @@ export function Dropdown({ trigger, items, onSelect, selectedValue, align = 'lef
         <Portal>
           <div
             className={cn(
-              'fixed z-50 mt-1.5 min-w-[200px] bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg py-1 animate-slide-down',
+              'fixed z-50 mt-1.5 min-w-[200px] bg-white/90 dark:bg-[#221b12]/90 backdrop-blur-2xl rounded-xl border border-[var(--color-border-primary)] shadow-lg py-1 animate-slide-down',
               align === 'right' ? 'right-0' : 'left-0'
             )}
             role="listbox"
@@ -110,7 +110,7 @@ export function Dropdown({ trigger, items, onSelect, selectedValue, align = 'lef
                   }}
                   className={cn(
                     'w-full px-4 py-2.5 text-left text-body-sm flex items-center gap-3 transition-colors',
-                    'hover:bg-slate-100 dark:hover:bg-slate-700',
+                    'hover:bg-[var(--color-bg-tertiary)]',
                     item.danger ? 'text-red-600 dark:text-red-400' : 'text-slate-700 dark:text-slate-300',
                     item.disabled && 'opacity-50 cursor-not-allowed',
                     isSelected && 'bg-brand-50 dark:bg-brand-900/20 text-brand-600 dark:text-brand-400'
@@ -129,9 +129,11 @@ export function Dropdown({ trigger, items, onSelect, selectedValue, align = 'lef
   )
 }
 
-export function UserMenu({ user, onProfile, onSettings, onLogout }: {
+export function UserMenu({ user, onProfile, onNotifications, onContact, onSettings, onLogout }: {
   user: { name: string; email: string; avatar?: string; role?: string }
   onProfile: () => void
+  onNotifications?: () => void
+  onContact?: () => void
   onSettings: () => void
   onLogout: () => void
 }) {
@@ -139,6 +141,12 @@ export function UserMenu({ user, onProfile, onSettings, onLogout }: {
     switch (value) {
       case 'profile':
         onProfile()
+        break
+      case 'notifications':
+        onNotifications?.()
+        break
+      case 'contact':
+        onContact?.()
         break
       case 'settings':
         onSettings()
@@ -162,6 +170,8 @@ export function UserMenu({ user, onProfile, onSettings, onLogout }: {
       }
       items={[
         { label: 'Profil', value: 'profile', icon: <User className="w-4 h-4" /> },
+        { label: 'Notifications', value: 'notifications', icon: <Bell className="w-4 h-4" /> },
+        { label: 'Contact', value: 'contact', icon: <Phone className="w-4 h-4" /> },
         { label: 'Paramètres', value: 'settings', icon: <Settings className="w-4 h-4" /> },
         { divider: true },
         { label: 'Déconnexion', value: 'logout', icon: <LogOut className="w-4 h-4" />, danger: true },

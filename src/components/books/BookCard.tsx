@@ -1,18 +1,29 @@
 import { motion } from 'framer-motion'
+import type { SyntheticEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { BookOpen, Check, AlertTriangle, TrendingUp } from 'lucide-react'
+import { BookOpen, Check, AlertTriangle, TrendingUp, Pencil, Trash2 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
+import { getBookCover, fallbackCover } from '@/lib/utils'
 import type { Book } from '@/types'
 
 interface BookCardProps {
   book: Book
   variant?: 'grid' | 'list'
   index?: number
+  onEdit?: (book: Book) => void
+  onDelete?: (book: Book) => void
 }
 
-export function BookCard({ book, variant = 'grid', index = 0 }: BookCardProps) {
-  const coverUrl = book.coverUrl || `https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=450&fit=crop&crop=entropy&auto=format&q=80&sig=${book.isbn}`
+export function BookCard({ book, variant = 'grid', index = 0, onEdit, onDelete }: BookCardProps) {
+  const coverUrl = getBookCover(book)
+
+  const handleImgError = (e: SyntheticEvent<HTMLImageElement>) => {
+    const img = e.currentTarget
+    if (img.dataset.fallback) return
+    img.dataset.fallback = '1'
+    img.src = fallbackCover(book.title)
+  }
 
   const isAvailable = book.availableCopies > 0
 
@@ -32,6 +43,7 @@ export function BookCard({ book, variant = 'grid', index = 0 }: BookCardProps) {
                 alt={book.title}
                 className="w-full h-full object-cover opacity-90"
                 loading="lazy"
+                onError={handleImgError}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               {!isAvailable && (
@@ -74,6 +86,16 @@ export function BookCard({ book, variant = 'grid', index = 0 }: BookCardProps) {
             <Link to={`/books/${book.id}`} className="p-2 rounded-xl hover:bg-[var(--color-bg-tertiary)] transition-colors text-[var(--color-text-muted)] hover:text-primary-500" aria-label="Voir détails">
               <BookOpen className="w-4 h-4" />
             </Link>
+            {onEdit && (
+              <button onClick={() => onEdit(book)} className="p-2 rounded-xl hover:bg-[var(--color-bg-tertiary)] transition-colors text-[var(--color-text-muted)] hover:text-primary-500" aria-label="Modifier">
+                <Pencil className="w-4 h-4" />
+              </button>
+            )}
+            {onDelete && (
+              <button onClick={() => onDelete(book)} className="p-2 rounded-xl hover:bg-[var(--color-bg-tertiary)] transition-colors text-[var(--color-text-muted)] hover:text-red-500" aria-label="Supprimer">
+                <Trash2 className="w-4 h-4" />
+              </button>
+            )}
           </div>
         </td>
       </motion.tr>
@@ -95,6 +117,7 @@ export function BookCard({ book, variant = 'grid', index = 0 }: BookCardProps) {
               alt={book.title}
               className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
               loading="lazy"
+              onError={handleImgError}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             
@@ -111,6 +134,29 @@ export function BookCard({ book, variant = 'grid', index = 0 }: BookCardProps) {
                 )}
               </Badge>
             </div>
+
+            {(onEdit || onDelete) && (
+              <div className="absolute top-3 left-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-2 group-hover:translate-y-0">
+                {onEdit && (
+                  <button
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(book) }}
+                    className="p-1.5 rounded-lg bg-white/90 dark:bg-[#17120c]/90 text-[var(--color-text-secondary)] hover:text-primary-500 shadow"
+                    aria-label="Modifier"
+                  >
+                    <Pencil className="w-3.5 h-3.5" />
+                  </button>
+                )}
+                {onDelete && (
+                  <button
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(book) }}
+                    className="p-1.5 rounded-lg bg-white/90 dark:bg-[#17120c]/90 text-[var(--color-text-secondary)] hover:text-red-500 shadow"
+                    aria-label="Supprimer"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+            )}
 
             <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-2 group-hover:translate-y-0 flex justify-between">
               <Badge variant="info" className="text-xs px-2 py-1">{book.category}</Badge>

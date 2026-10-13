@@ -13,7 +13,7 @@ export function Badge({ children, variant = 'neutral', size = 'md', className, d
     success: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400',
     warning: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400',
     danger: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
-    info: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400',
+    info: 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400',
     neutral: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300',
     brand: 'bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-400',
   }
