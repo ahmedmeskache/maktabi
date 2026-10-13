@@ -67,17 +67,21 @@
     @apply bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] transition-colors duration-300;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     background-image:
-      linear-gradient(rgba(255, 253, 248, 0.5), rgba(255, 253, 248, 0.68)),
+      radial-gradient(ellipse 65% 45% at 10% -8%, rgba(212, 160, 42, 0.22), transparent 62%),
+      radial-gradient(ellipse 55% 45% at 108% 108%, rgba(47, 125, 91, 0.20), transparent 60%),
+      linear-gradient(180deg, rgba(255, 252, 246, 0.58) 0%, rgba(245, 239, 227, 0.72) 52%, rgba(238, 226, 206, 0.85) 100%),
       url('/library-bg.jpg');
-    background-size: cover, cover;
-    background-position: center, center;
-    background-repeat: no-repeat, no-repeat;
-    background-attachment: fixed, fixed;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
   }
 
   .dark body {
     background-image:
-      linear-gradient(rgba(23, 18, 12, 0.72), rgba(23, 18, 12, 0.82)),
+      radial-gradient(ellipse 65% 45% at 10% -8%, rgba(212, 160, 42, 0.16), transparent 62%),
+      radial-gradient(ellipse 55% 45% at 108% 108%, rgba(47, 125, 91, 0.18), transparent 60%),
+      linear-gradient(180deg, rgba(23, 18, 12, 0.70) 0%, rgba(23, 18, 12, 0.82) 52%, rgba(23, 18, 12, 0.90) 100%),
       url('/library-bg.jpg');
   }
 
@@ -119,11 +123,11 @@
   }
 
   .btn-primary {
-    @apply btn bg-gradient-to-r from-primary-600 to-primary-500 text-white hover:from-primary-700 hover:to-primary-600 focus-visible:ring-primary-500 shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.98];
+    @apply btn bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700 text-white focus-visible:ring-primary-500 shadow-lg shadow-primary-600/30 hover:shadow-xl hover:shadow-primary-600/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98];
   }
 
   .btn-secondary {
-    @apply btn bg-[var(--color-bg-tertiary)] text-[var(--color-text-primary)] hover:bg-[var(--color-border-primary)] focus-visible:ring-[var(--color-border-secondary)];
+    @apply btn bg-[var(--color-bg-tertiary)] text-[var(--color-text-primary)] border border-[var(--color-border-primary)] hover:bg-[var(--color-border-primary)] hover:-translate-y-0.5 active:translate-y-0 focus-visible:ring-[var(--color-border-secondary)];
   }
 
   .btn-ghost {
@@ -139,7 +143,7 @@
   }
 
   .input {
-    @apply w-full px-4 py-3.5 rounded-xl border border-[var(--color-border-primary)] bg-[var(--color-bg-card)] text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] transition-all duration-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none;
+    @apply w-full px-4 py-3.5 rounded-xl border border-[var(--color-border-primary)] bg-[var(--color-bg-card)] text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] transition-all duration-200 hover:border-[var(--color-border-secondary)] focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none;
   }
 
   .label {
@@ -147,11 +151,11 @@
   }
 
   .card {
-    @apply bg-[var(--color-bg-card)] rounded-2xl border border-[var(--color-border-primary)] shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden;
+    @apply relative bg-[var(--color-bg-card)] rounded-2xl border border-[var(--color-border-primary)] shadow-[0_1px_2px_rgba(44,32,19,0.05),0_14px_34px_-22px_rgba(44,32,19,0.45)] transition-all duration-300 overflow-hidden;
   }
 
   .card-hover {
-    @apply card hover:shadow-xl hover:border-primary-500/20 hover:-translate-y-1 transition-all duration-300;
+    @apply card hover:shadow-[0_22px_50px_-24px_rgba(47,125,91,0.5)] hover:border-primary-500/30 hover:-translate-y-1 transition-all duration-300;
   }
 
   .card-glass {

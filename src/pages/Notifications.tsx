@@ -18,7 +18,7 @@ const initialNotifications: AppNotification[] = [
   { id: 1, title: 'Retour en retard', message: 'Le livre "Le Petit Prince" est en retard de 3 jours', time: 'Il y a 5 min', read: false },
   { id: 2, title: 'Nouveau membre', message: 'Marie Dubois s\'est inscrite', time: 'Il y a 1 heure', read: false },
   { id: 3, title: 'Réservation prête', message: '"1984" est disponible pour Jean Martin', time: 'Il y a 2 heures', read: true },
-  { id: 4, title: 'Amende impayée', message: 'Une amende de 2,50 € est en attente pour Luc Bernard', time: 'Hier', read: true },
+  { id: 4, title: 'Amende impayée', message: 'Une amende de 150 DA est en attente pour Luc Bernard', time: 'Hier', read: true },
 ]
 
 export function Notifications() {

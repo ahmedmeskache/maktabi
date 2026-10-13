@@ -8,13 +8,13 @@ import { Avatar } from '@/components/ui/Avatar'
 import { useLibraryStore } from '@/store/library'
 import { getBookCover, fallbackCover, formatCurrency, formatDate } from '@/lib/utils'
 
-const colorMap: Record<string, { bg: string; text: string }> = {
-  primary: { bg: 'bg-brand-500/10', text: 'text-brand-500' },
-  emerald: { bg: 'bg-emerald-500/10', text: 'text-emerald-500' },
-  accent: { bg: 'bg-accent-500/10', text: 'text-accent-500' },
-  amber: { bg: 'bg-amber-500/10', text: 'text-amber-500' },
-  red: { bg: 'bg-red-500/10', text: 'text-red-500' },
-  purple: { bg: 'bg-purple-500/10', text: 'text-purple-500' },
+const colorMap: Record<string, { bg: string; text: string; gradient: string; glow: string }> = {
+  primary: { bg: 'bg-brand-500/10', text: 'text-brand-500', gradient: 'from-brand-500 to-brand-700', glow: 'bg-brand-500/30' },
+  emerald: { bg: 'bg-emerald-500/10', text: 'text-emerald-500', gradient: 'from-emerald-500 to-emerald-700', glow: 'bg-emerald-500/30' },
+  accent: { bg: 'bg-accent-500/10', text: 'text-accent-500', gradient: 'from-accent-500 to-accent-700', glow: 'bg-accent-500/30' },
+  amber: { bg: 'bg-amber-500/10', text: 'text-amber-500', gradient: 'from-amber-500 to-amber-700', glow: 'bg-amber-500/30' },
+  red: { bg: 'bg-red-500/10', text: 'text-red-500', gradient: 'from-red-500 to-red-700', glow: 'bg-red-500/30' },
+  purple: { bg: 'bg-purple-500/10', text: 'text-purple-500', gradient: 'from-purple-500 to-purple-700', glow: 'bg-purple-500/30' },
 }
 
 export function Dashboard() {
@@ -87,7 +87,7 @@ export function Dashboard() {
     <div className="space-y-6 page-transition">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-display-sm font-bold text-slate-900 dark:text-white">Tableau de bord</h1>
+          <h1 className="text-display-sm font-bold text-slate-900 dark:text-white">Tableau de <span className="gradient-text">bord</span></h1>
           <p className="text-body-md text-slate-500 dark:text-slate-400 mt-1">Vue d'ensemble de votre bibliothèque Maktabi</p>
         </div>
         <Link to="/loans/checkout"><Button variant="primary" className="gap-2"><Plus className="w-4 h-4" /> Nouvel emprunt</Button></Link>
@@ -98,16 +98,17 @@ export function Dashboard() {
           const colors = colorMap[stat.color] || colorMap.primary
           return (
             <motion.div key={stat.name} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1, duration: 0.4 }}>
-              <Link to={stat.href} className="block">
-                <Card className="h-full card-hover">
-                  <CardContent className="p-6">
+              <Link to={stat.href} className="block group">
+                <Card className="h-full card-hover overflow-hidden">
+                  <div className={'pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full blur-2xl opacity-40 bg-gradient-to-br ' + colors.gradient} aria-hidden="true" />
+                  <CardContent className="relative p-6">
                     <div className="flex items-start justify-between">
                       <div>
                         <p className="text-body-sm font-medium text-slate-500 dark:text-slate-400">{stat.name}</p>
                         <p className="text-display-sm font-bold text-slate-900 dark:text-white mt-1 tabular-nums">{stat.value}</p>
                       </div>
-                      <div className={'w-14 h-14 rounded-2xl flex items-center justify-center ' + colors.bg}>
-                        <stat.icon className={'w-7 h-7 ' + colors.text} />
+                      <div className={'w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br text-white shadow-lg shadow-black/10 ring-1 ring-white/20 transition-transform duration-300 group-hover:scale-105 ' + colors.gradient}>
+                        <stat.icon className="w-7 h-7" />
                       </div>
                     </div>
                     <p className="mt-5 text-body-sm text-slate-500 dark:text-slate-400">{stat.sub}</p>
@@ -127,10 +128,8 @@ export function Dashboard() {
                 const colors = colorMap[stat.color] || colorMap.primary
                 return (
                   <motion.div key={stat.label} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: index * 0.05 + 0.2 }}>
-                    <Link to={stat.href} className="block p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className={'w-10 h-10 rounded-xl flex items-center justify-center ' + colors.bg + ' ' + colors.text}><stat.icon className="w-5 h-5" /></div>
-                      </div>
+                    <Link to={stat.href} className="block p-4 rounded-xl bg-[var(--color-bg-tertiary)] border border-[var(--color-border-primary)] hover:border-primary-500/30 hover:-translate-y-0.5 transition-all group">
+                      <div className={'w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br text-white shadow-md shadow-black/10 mb-3 transition-transform duration-300 group-hover:scale-105 ' + colors.gradient}><stat.icon className="w-5 h-5" /></div>
                       <p className="text-heading-md font-bold text-slate-900 dark:text-white">{stat.value}</p>
                       <p className="text-body-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">{stat.label}</p>
                     </Link>

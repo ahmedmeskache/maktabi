@@ -54,7 +54,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-30 bg-white/55 dark:bg-[#221b12]/55 backdrop-blur-2xl border-b border-[var(--color-border-primary)]/60">
-      <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 w-full max-w-[1600px] items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4 flex-1 min-w-0">
             <form className="relative hidden sm:block w-80 max-w-md" onSubmit={(e) => { e.preventDefault(); const q = searchQuery.trim(); navigate(q ? `/books?q=${encodeURIComponent(q)}` : '/books') }}>
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" />
@@ -64,10 +64,10 @@ export function Header() {
                 placeholder="Rechercher livres, adhérents... (⌘K)"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-100 dark:bg-slate-800 border-0 rounded-xl text-body-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-brand-500 focus:bg-white dark:focus:bg-slate-800 transition-all"
+                className="w-full pl-10 pr-16 py-2.5 bg-white/60 dark:bg-[#221b12]/50 backdrop-blur-md border border-[var(--color-border-primary)] rounded-full text-body-sm text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500/50 focus:bg-white dark:focus:bg-[#221b12] transition-all shadow-sm"
                 aria-label="Recherche globale"
               />
-              <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 px-2 py-1 text-body-xs text-slate-400 bg-slate-200 dark:bg-slate-700 rounded">
+              <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 px-2 py-1 text-body-xs text-slate-400 bg-slate-200 dark:bg-slate-700 rounded-full">
                 <Command className="w-3 h-3" />
                 <span>K</span>
               </kbd>

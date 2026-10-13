@@ -31,7 +31,12 @@ export function formatDate(date: Date | string, format: 'short' | 'long' | 'rela
 }
 
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount)
+  return new Intl.NumberFormat('fr-DZ', {
+    style: 'currency',
+    currency: 'DZD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(amount)
 }
 
 export function generateId(): string {
@@ -53,7 +58,7 @@ export function daysBetween(from: Date | string, to: Date | string): number {
   return Math.floor((b.getTime() - a.getTime()) / (1000 * 60 * 60 * 24))
 }
 
-export const FINE_PER_DAY = 0.5
+export const FINE_PER_DAY = 50
 
 export function calculateFine(dueDate: Date | string, reference: Date | string = new Date()): number {
   const overdue = daysBetween(dueDate, reference)

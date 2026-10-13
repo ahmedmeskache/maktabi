@@ -64,11 +64,11 @@ export function Sidebar() {
             )}
           >
             <div className="flex h-16 items-center justify-between px-4 border-b border-[var(--color-border-primary)]/60">
-              <Link to="/" className="flex items-center gap-2" aria-label="Maktabi - Accueil">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center">
+              <Link to="/" className="group flex items-center gap-2.5" aria-label="Maktabi - Accueil">
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-500 via-brand-600 to-accent-500 flex items-center justify-center shadow-lg shadow-brand-600/30 ring-1 ring-white/20 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
                   <BookMarked className="w-5 h-5 text-white" />
                 </div>
-                {!collapsed && <span className="font-display font-bold text-heading-sm text-slate-900 dark:text-white">Maktabi</span>}
+                {!collapsed && <span className="font-display font-bold text-heading-sm bg-gradient-to-br from-brand-600 to-accent-600 dark:from-brand-300 dark:to-accent-300 bg-clip-text text-transparent">Maktabi</span>}
               </Link>
               <button
                 onClick={handleToggle}
@@ -91,11 +91,11 @@ export function Sidebar() {
                     key={item.name}
                     to={item.href}
                     className={({ isActive: active }) => cn(
-                      'flex items-center gap-3 px-3 py-2.5 rounded-xl text-body-sm font-medium transition-all duration-200',
+                      'relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-body-sm font-medium transition-all duration-200',
                       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2',
                       active
-                        ? 'bg-brand-50 dark:bg-brand-900/20 text-brand-600 dark:text-brand-400 shadow-sm'
-                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100',
+                        ? 'bg-gradient-to-r from-brand-500/15 to-transparent text-brand-700 dark:text-brand-300 font-semibold shadow-sm before:absolute before:left-0 before:top-1/2 before:h-6 before:w-1 before:-translate-y-1/2 before:rounded-r-full before:bg-gradient-to-b before:from-brand-500 before:to-accent-500'
+                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100 hover:translate-x-0.5',
                       collapsed && 'justify-center'
                     )}
                     title={collapsed ? item.name : undefined}
@@ -120,8 +120,8 @@ export function Sidebar() {
             </nav>
 
             <div className="p-3 border-t border-[var(--color-border-primary)]/60">
-              <div className={cn('px-3 py-2.5 rounded-xl text-body-sm', collapsed && 'text-center')}>
-                <p className="font-medium text-slate-900 dark:text-white truncate">Version 1.0.0</p>
+              <div className={cn('px-3 py-2.5 rounded-xl text-body-sm bg-[var(--color-bg-tertiary)] border border-[var(--color-border-primary)]', collapsed && 'text-center')}>
+                <p className="font-semibold text-slate-900 dark:text-white truncate">Version 1.0.0</p>
                 <p className="text-slate-500 dark:text-slate-400 truncate">Maktabi Library System</p>
               </div>
             </div>
