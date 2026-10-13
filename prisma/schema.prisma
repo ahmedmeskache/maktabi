@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Book {
+  id              String   @id @default(cuid())
+  isbn            String   @unique
+  title           String
+  author          String
+  publisher       String?
+  publishedYear   Int?
+  category        String
+  subcategory     String?
+  description     String?
+  coverUrl        String?
+  totalCopies     Int      @default(1)
+  availableCopies Int      @default(1)
+  location        String?
+  tags            String[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  loans           Loan[]
+
+  @@index([category])
+  @@index([author])
+  @@index([title])
+}
+
+model Member {
+  id               String       @id @default(cuid())
+  memberNumber     String       @unique
+  firstName        String
+  lastName         String
+  email            String       @unique
+  phone            String?
+  address          String?
+  dateOfBirth      DateTime?
+  membershipType   MembershipType @default(standard)
+  membershipStart  DateTime     @default(now())
+  membershipEnd    DateTime
+  status           MemberStatus @default(active)
+  avatarUrl        String?
+  qrCode           String?
+  totalLoans       Int          @default(0)
+  activeLoans      Int          @default(0)
+  totalFines       Float        @default(0)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  loans            Loan[]
+  reservations     Reservation[]
+
+  @@index([email])
+  @@index([memberNumber])
+  @@index([status])
+}
+
+model Loan {
+  id           String     @id @default(cuid())
+  bookId       String
+  memberId     String
+  loanDate     DateTime   @default(now())
+  dueDate      DateTime
+  returnDate   DateTime?
+  status       LoanStatus @default(active)
+  fineAmount   Float      @default(0)
+  finePaid     Boolean    @default(false)
+  renewalCount Int        @default(0)
+  notes        String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  book         Book       @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  member       Member     @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@index([bookId])
+  @@index([memberId])
+  @@index([status])
+  @@index([dueDate])
+}
+
+model Reservation {
+  id               String            @id @default(cuid())
+  bookId           String
+  memberId         String
+  reservationDate  DateTime          @default(now())
+  expiryDate       DateTime
+  status           ReservationStatus @default(pending)
+  position         Int               @default(1)
+  notifiedAt       DateTime?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  book             Book              @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  member           Member            @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@index([bookId])
+  @@index([memberId])
+  @@index([status])
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  color       String   @default("#0ea5e9")
+  icon        String?
+  bookCount   Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+enum MembershipType {
+  student
+  standard
+  premium
+  staff
+}
+
+enum MemberStatus {
+  active
+  expired
+  suspended
+  pending
+}
+
+enum LoanStatus {
+  active
+  returned
+  overdue
+  lost
+}
+
+enum ReservationStatus {
+  pending
+  ready
+  cancelled
+  completed
+}
