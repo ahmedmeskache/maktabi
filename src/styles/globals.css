@@ -283,16 +283,12 @@
   .text-amber-600 { color: var(--color-warning-500); }
   .bg-amber-50 { background-color: #fffbeb; }
   .dark\:bg-amber-900\/20 { background-color: rgba(120, 53, 15, 0.2); }
-  .bg-blue-50 { background-color: #eff6ff; }
-  .dark\:bg-blue-900\/20 { background-color: rgba(30, 58, 138, 0.2); }
   .bg-green-50 { background-color: #f0fdf4; }
   .dark\:bg-green-900\/20 { background-color: rgba(6, 78, 59, 0.2); }
   .bg-red-50 { background-color: #fef2f2; }
   .dark\:bg-red-900\/20 { background-color: rgba(127, 29, 29, 0.2); }
   .border-amber-200 { border-color: #fde68a; }
   .dark\:border-amber-800 { border-color: #78350f; }
-  .border-blue-200 { border-color: #bfdbfe; }
-  .dark\:border-blue-800 { border-color: #1e3a5f; }
   .border-green-200 { border-color: #bbf7d0; }
   .dark\:border-green-800 { border-color: #064e3b; }
   .border-red-200 { border-color: #fecaca; }
@@ -301,10 +297,6 @@
   .dark\:text-amber-100 { color: #fef3c7; }
   .text-amber-700 { color: #b45309; }
   .dark\:text-amber-300 { color: #fcd34d; }
-  .text-blue-900 { color: #1e3a5f; }
-  .dark\:text-blue-100 { color: #dbeafe; }
-  .text-blue-700 { color: #1d4ed8; }
-  .dark\:text-blue-300 { color: #93c5fd; }
   .text-green-900 { color: #064e3b; }
   .dark\:text-green-100 { color: #dcfce7; }
   .text-green-700 { color: #059669; }
@@ -331,8 +323,6 @@
   .bg-red-500\/20 { background-color: rgba(239, 68, 68, 0.2); }
   .text-red-400 { color: #f87171; }
   .dark\:text-red-300 { color: #fca5a5; }
-  .text-blue-400 { color: #60a5fa; }
-  .dark\:text-blue-300 { color: #93c5fd; }
   .bg-brand-500\/20 { background-color: rgba(47, 125, 91, 0.2); }
   .dark\:bg-brand-900\/30 { background-color: rgba(47, 125, 91, 0.3); }
   .text-brand-700 { color: #1d553d; }
@@ -351,8 +341,6 @@
   .dark\:hover\:bg-red-900\/20:hover { background-color: rgba(127, 29, 29, 0.2); }
   .hover\:bg-emerald-50:hover { background-color: #f0fdf4; }
   .dark\:hover\:bg-emerald-900\/20:hover { background-color: rgba(6, 78, 59, 0.2); }
-  .hover\:bg-blue-50:hover { background-color: #eff6ff; }
-  .dark\:hover\:bg-blue-900\/20:hover { background-color: rgba(30, 58, 138, 0.2); }
   .text-emerald-500 { color: #10b981; }
   .text-amber-500 { color: #f59e0b; }
 }

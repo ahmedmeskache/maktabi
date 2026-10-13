@@ -50,6 +50,20 @@ export default {
           900: '#68451c',
           950: '#3c260c',
         },
+        // Warm neutral palette (overrides default blue-gray slate)
+        slate: {
+          50: '#faf6ef',
+          100: '#f3ecdf',
+          200: '#e2d6c0',
+          300: '#cfbe9f',
+          400: '#a2937a',
+          500: '#6b5b45',
+          600: '#52432f',
+          700: '#3d3223',
+          800: '#2a2116',
+          900: '#1c1610',
+          950: '#0f0b07',
+        },
         // Semantic colors
         surface: {
           light: '#fffdf8',
@@ -152,10 +166,10 @@ export default {
   plugins: [],
   safelist: [
     // Color opacity variants
-    { pattern: /bg-(primary|emerald|amber|red|blue|purple|accent)-(50|100|200|300|400|500|600|700|800|900)\/(5|10|15|20|25|30|40|50|60|70|80|90|95)/ },
-    { pattern: /text-(primary|emerald|amber|red|blue|purple|accent)-(50|100|200|300|400|500|600|700|800|900)\/(5|10|15|20|25|30|40|50|60|70|80|90|95)/ },
-    { pattern: /border-(primary|emerald|amber|red|blue|purple|accent)-(50|100|200|300|400|500|600|700|800|900)\/(5|10|15|20|25|30|40|50|60|70|80|90|95)/ },
-    { pattern: /ring-(primary|emerald|amber|red|blue|purple|accent)-(50|100|200|300|400|500|600|700|800|900)\/(5|10|15|20|25|30|40|50|60|70|80|90|95)/ },
+    { pattern: /bg-(primary|emerald|amber|red|purple|accent)-(50|100|200|300|400|500|600|700|800|900)\/(5|10|15|20|25|30|40|50|60|70|80|90|95)/ },
+    { pattern: /text-(primary|emerald|amber|red|purple|accent)-(50|100|200|300|400|500|600|700|800|900)\/(5|10|15|20|25|30|40|50|60|70|80|90|95)/ },
+    { pattern: /border-(primary|emerald|amber|red|purple|accent)-(50|100|200|300|400|500|600|700|800|900)\/(5|10|15|20|25|30|40|50|60|70|80|90|95)/ },
+    { pattern: /ring-(primary|emerald|amber|red|purple|accent)-(50|100|200|300|400|500|600|700|800|900)\/(5|10|15|20|25|30|40|50|60|70|80|90|95)/ },
     // Gradient utilities
     'bg-gradient-to-r',
     'from-primary-600',
@@ -165,8 +179,6 @@ export default {
     'to-primary-400/10',
     'from-emerald-500/10',
     'to-emerald-400/10',
-    'from-blue-500/10',
-    'to-blue-400/10',
     'from-red-500/10',
     'to-red-400/10',
     'from-amber-500/10',
