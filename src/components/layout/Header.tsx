@@ -17,6 +17,11 @@ export function Header() {
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
   const [showNotifications, setShowNotifications] = useState(false)
+  const [notifications, setNotifications] = useState<{ id: number; key: string; read: boolean }[]>([
+    { id: 1, key: 'overdue', read: false },
+    { id: 2, key: 'member', read: false },
+    { id: 3, key: 'reservation', read: true },
+  ])
   const [, setShowProfile] = useState(false)
   const searchRef = useRef<HTMLInputElement>(null)
   const notificationsRef = useRef<HTMLDivElement>(null)
@@ -50,11 +55,7 @@ export function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const notifications = [
-    { id: 1, title: t('demo.notif.overdue.title'), message: t('demo.notif.overdue.message'), time: t('demo.notif.overdue.time'), read: false },
-    { id: 2, title: t('demo.notif.member.title'), message: t('demo.notif.member.message'), time: t('demo.notif.member.time'), read: false },
-    { id: 3, title: t('demo.notif.reservation.title'), message: t('demo.notif.reservation.message'), time: t('demo.notif.reservation.time'), read: true },
-  ]
+  const unreadCount = notifications.filter((n) => !n.read).length
 
   const handleLogout = () => {
     setShowProfile(false)
@@ -116,7 +117,9 @@ export function Header() {
               aria-expanded={showNotifications}
             >
               <Bell className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 rtl:-right-auto rtl:-left-1 w-4 h-4 bg-red-500 text-white text-[10px] font-medium rounded-full flex items-center justify-center">3</span>
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 rtl:-right-auto rtl:-left-1 w-4 h-4 bg-red-500 text-white text-[10px] font-medium rounded-full flex items-center justify-center">{unreadCount}</span>
+              )}
             </Button>
 
             <AnimatePresence>
@@ -131,14 +134,20 @@ export function Header() {
                 >
                   <div className="p-4 border-b border-[var(--color-border-primary)] flex items-center justify-between">
                     <h3 className="font-semibold text-slate-900 dark:text-white">{t('layout.notifications')}</h3>
-                    <Button variant="ghost" size="sm" className="text-body-xs" onClick={() => { toast.success(t('layout.allRead')); setShowNotifications(false) }}>{t('layout.markAllRead')}</Button>
+                    {notifications.length > 0 && (
+                      <Button variant="ghost" size="sm" className="text-body-xs" onClick={() => { setNotifications([]); toast.success(t('layout.allRead')) }}>{t('layout.markAllRead')}</Button>
+                    )}
                   </div>
                   <div className="max-h-96 overflow-y-auto">
+                    {notifications.length === 0 && (
+                      <p className="p-8 text-center text-body-sm text-[var(--color-text-muted)]">{t('layout.allRead')}</p>
+                    )}
                     {notifications.map((notification) => (
                       <div
                         key={notification.id}
+                        onClick={() => setNotifications((prev) => prev.map((n) => (n.id === notification.id ? { ...n, read: true } : n)))}
                         className={cn(
-                          'p-4 border-b border-[var(--color-border-primary)]/60 hover:bg-[var(--color-bg-tertiary)] transition-colors',
+                          'p-4 border-b border-[var(--color-border-primary)]/60 hover:bg-[var(--color-bg-tertiary)] transition-colors cursor-pointer',
                           !notification.read && 'bg-brand-50/50 dark:bg-brand-900/10'
                         )}
                       >
@@ -146,10 +155,10 @@ export function Header() {
                           <div className={cn('w-2 h-2 mt-2 rounded-full flex-shrink-0', !notification.read ? 'bg-brand-500' : 'bg-transparent') } />
                           <div className="flex-1 min-w-0">
                             <p className={cn('font-medium text-slate-900 dark:text-white', !notification.read && 'font-semibold')}>
-                              {notification.title}
+                              {t(`demo.notif.${notification.key}.title`)}
                             </p>
-                            <p className="text-body-sm text-slate-600 dark:text-slate-400 mt-0.5 truncate">{notification.message}</p>
-                            <p className="text-body-xs text-slate-400 mt-1">{notification.time}</p>
+                            <p className="text-body-sm text-slate-600 dark:text-slate-400 mt-0.5 truncate">{t(`demo.notif.${notification.key}.message`)}</p>
+                            <p className="text-body-xs text-slate-400 mt-1">{t(`demo.notif.${notification.key}.time`)}</p>
                           </div>
                         </div>
                       </div>

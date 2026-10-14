@@ -15,6 +15,44 @@ export const seedBooks: Book[] = [
   { id: '10', isbn: '9782070415670', title: 'Fondation', author: 'Isaac Asimov', publisher: 'Denoël', publishedYear: 1951, category: 'Science-Fiction', subcategory: 'Space Opera', description: 'Cycle Fondation.', coverUrl: 'https://covers.openlibrary.org/b/id/14612610-L.jpg?default=false', totalCopies: 3, availableCopies: 2, location: 'Rayon B', tags: ['SF'], totalLoans: 72, createdAt: now, updatedAt: now },
   { id: '11', isbn: '9782070360536', title: 'Le Meilleur des mondes', author: 'Aldous Huxley', publisher: 'Gallimard', publishedYear: 1932, category: 'Science-Fiction', subcategory: 'Dystopie', description: 'Dystopie.', coverUrl: 'https://covers.openlibrary.org/b/id/14002262-L.jpg?default=false', totalCopies: 3, availableCopies: 3, location: 'Rayon B', tags: ['Dystopie'], totalLoans: 58, createdAt: now, updatedAt: now },
   { id: '12', isbn: '9782226257017', title: 'Sapiens', author: 'Yuval Noah Harari', publisher: 'Albin Michel', publishedYear: 2015, category: 'Histoire', subcategory: 'Anthropologie', description: 'Histoire de l\'humanité.', coverUrl: 'https://covers.openlibrary.org/b/id/9287143-L.jpg?default=false', totalCopies: 5, availableCopies: 4, location: 'Rayon E', tags: ['Histoire'], totalLoans: 103, createdAt: now, updatedAt: now },
+
+  // Philosophie
+  { id: '13', isbn: '9782070323173', title: 'Le Mythe de Sisyphe', author: 'Albert Camus', publisher: 'Gallimard', publishedYear: 1942, category: 'Philosophie', subcategory: 'Existentialisme', description: 'Essai sur l\'absurde.', coverUrl: null, totalCopies: 3, availableCopies: 3, location: 'Rayon C', tags: ['Absurde'], totalLoans: 47, createdAt: now, updatedAt: now },
+  { id: '14', isbn: '9782080708434', title: 'Ainsi parlait Zarathoustra', author: 'Friedrich Nietzsche', publisher: 'Flammarion', publishedYear: 1883, category: 'Philosophie', subcategory: 'Morale', description: 'Poème philosophique.', coverUrl: null, totalCopies: 2, availableCopies: 2, location: 'Rayon C', tags: ['Morale'], totalLoans: 39, createdAt: now, updatedAt: now },
+  { id: '15', isbn: '9782253054488', title: 'Méditations', author: 'Marc Aurèle', publisher: 'Le Livre de Poche', publishedYear: 180, category: 'Philosophie', subcategory: 'Stoïcisme', description: 'Pensées pour soi-même.', coverUrl: null, totalCopies: 3, availableCopies: 2, location: 'Rayon C', tags: ['Stoïcisme'], totalLoans: 44, createdAt: now, updatedAt: now },
+
+  // Fantasy
+  { id: '16', isbn: '9782266154126', title: 'Le Hobbit', author: 'J.R.R. Tolkien', publisher: 'Pocket', publishedYear: 1937, category: 'Fantasy', subcategory: 'Epic Fantasy', description: 'Aventure en Terre du Milieu.', coverUrl: null, totalCopies: 4, availableCopies: 3, location: 'Rayon D', tags: ['Tolkien'], totalLoans: 81, createdAt: now, updatedAt: now },
+  { id: '17', isbn: '9782264023356', title: 'Le Trône de fer', author: 'George R. R. Martin', publisher: 'Pygmalion', publishedYear: 1996, category: 'Fantasy', subcategory: 'Dark Fantasy', description: 'Guerre des trônes.', coverUrl: null, totalCopies: 5, availableCopies: 5, location: 'Rayon D', tags: ['Westeros'], totalLoans: 92, createdAt: now, updatedAt: now },
+  { id: '18', isbn: '9782070544257', title: 'Le Lion, la sorcière blanche et l\'armoire magique', author: 'C. S. Lewis', publisher: 'Gallimard Jeunesse', publishedYear: 1950, category: 'Fantasy', subcategory: 'Jeunesse', description: 'Chroniques de Narnia.', coverUrl: null, totalCopies: 3, availableCopies: 3, location: 'Rayon D', tags: ['Narnia'], totalLoans: 56, createdAt: now, updatedAt: now },
+
+  // Histoire
+  { id: '19', isbn: '9782226392374', title: 'Homo Deus', author: 'Yuval Noah Harari', publisher: 'Albin Michel', publishedYear: 2017, category: 'Histoire', subcategory: 'Futur', description: 'Une brève histoire de l\'avenir.', coverUrl: null, totalCopies: 4, availableCopies: 3, location: 'Rayon E', tags: ['Futur'], totalLoans: 78, createdAt: now, updatedAt: now },
+  { id: '20', isbn: '9782070768462', title: 'SPQR', author: 'Mary Beard', publisher: 'Gallimard', publishedYear: 2015, category: 'Histoire', subcategory: 'Antiquité', description: 'Histoire de Rome.', coverUrl: null, totalCopies: 2, availableCopies: 2, location: 'Rayon E', tags: ['Rome'], totalLoans: 35, createdAt: now, updatedAt: now },
+
+  // Biographie
+  { id: '21', isbn: '9782709643535', title: 'Steve Jobs', author: 'Walter Isaacson', publisher: 'JC Lattès', publishedYear: 2011, category: 'Biographie', subcategory: 'Technologie', description: 'Biographie de Steve Jobs.', coverUrl: null, totalCopies: 4, availableCopies: 3, location: 'Rayon F', tags: ['Apple'], totalLoans: 88, createdAt: now, updatedAt: now },
+  { id: '22', isbn: '9782264030187', title: 'Un long chemin vers la liberté', author: 'Nelson Mandela', publisher: 'Pocket', publishedYear: 1994, category: 'Biographie', subcategory: 'Autobiographie', description: 'Autobiographie de Mandela.', coverUrl: null, totalCopies: 3, availableCopies: 3, location: 'Rayon F', tags: ['Politique'], totalLoans: 61, createdAt: now, updatedAt: now },
+
+  // Jeunesse
+  { id: '23', isbn: '9782070612901', title: 'Charlie et la chocolaterie', author: 'Roald Dahl', publisher: 'Gallimard Jeunesse', publishedYear: 1964, category: 'Jeunesse', subcategory: 'Aventure', description: 'La fabrique de chocolat.', coverUrl: null, totalCopies: 5, availableCopies: 5, location: 'Rayon G', tags: ['Dahl'], totalLoans: 74, createdAt: now, updatedAt: now },
+  { id: '24', isbn: '9782070612994', title: 'Le Petit Nicolas', author: 'René Goscinny', publisher: 'Gallimard Jeunesse', publishedYear: 1960, category: 'Jeunesse', subcategory: 'Humour', description: 'Les aventures du Petit Nicolas.', coverUrl: null, totalCopies: 6, availableCopies: 5, location: 'Rayon G', tags: ['Humour'], totalLoans: 69, createdAt: now, updatedAt: now },
+
+  // Sciences
+  { id: '25', isbn: '9782266273919', title: 'Une brève histoire du temps', author: 'Stephen Hawking', publisher: 'Flammarion', publishedYear: 1988, category: 'Sciences', subcategory: 'Physique', description: 'Du Big Bang aux trous noirs.', coverUrl: null, totalCopies: 4, availableCopies: 4, location: 'Rayon H', tags: ['Cosmologie'], totalLoans: 83, createdAt: now, updatedAt: now },
+  { id: '26', isbn: '9782081421936', title: 'L\'Ordre du temps', author: 'Carlo Rovelli', publisher: 'Flammarion', publishedYear: 2017, category: 'Sciences', subcategory: 'Physique', description: 'Réflexion sur le temps.', coverUrl: null, totalCopies: 3, availableCopies: 2, location: 'Rayon H', tags: ['Temps'], totalLoans: 52, createdAt: now, updatedAt: now },
+  { id: '27', isbn: '9782226407221', title: 'Le Gène', author: 'Siddhartha Mukherjee', publisher: 'Albin Michel', publishedYear: 2016, category: 'Sciences', subcategory: 'Génétique', description: 'Une histoire intime.', coverUrl: null, totalCopies: 3, availableCopies: 3, location: 'Rayon H', tags: ['Génétique'], totalLoans: 41, createdAt: now, updatedAt: now },
+
+  // Arts
+  { id: '28', isbn: '9782080112859', title: 'Histoire de l\'art', author: 'Ernst Gombrich', publisher: 'Flammarion', publishedYear: 1950, category: 'Arts', subcategory: 'Beaux-Arts', description: 'Panorama de l\'art mondial.', coverUrl: null, totalCopies: 3, availableCopies: 3, location: 'Rayon I', tags: ['Peinture'], totalLoans: 48, createdAt: now, updatedAt: now },
+  { id: '29', isbn: '9782070323562', title: 'Le Musée imaginaire', author: 'André Malraux', publisher: 'Gallimard', publishedYear: 1947, category: 'Arts', subcategory: 'Essai', description: 'Essai sur la création artistique.', coverUrl: null, totalCopies: 2, availableCopies: 2, location: 'Rayon I', tags: ['Esthétique'], totalLoans: 33, createdAt: now, updatedAt: now },
+
+  // Littérature (suit)
+  { id: '30', isbn: '9782070363453', title: 'Madame Bovary', author: 'Gustave Flaubert', publisher: 'Gallimard', publishedYear: 1857, category: 'Littérature', subcategory: 'Réalisme', description: 'Roman réaliste.', coverUrl: null, totalCopies: 3, availableCopies: 3, location: 'Rayon A', tags: ['Réalisme'], totalLoans: 70, createdAt: now, updatedAt: now },
+  { id: '31', isbn: '9782070413113', title: 'Les Misérables', author: 'Victor Hugo', publisher: 'Gallimard', publishedYear: 1862, category: 'Littérature', subcategory: 'Roman social', description: 'Fresque sociale.', coverUrl: null, totalCopies: 4, availableCopies: 3, location: 'Rayon A', tags: ['Classique'], totalLoans: 95, createdAt: now, updatedAt: now },
+
+  // Science-Fiction (suit)
+  { id: '32', isbn: '9782266328041', title: 'Neuromancien', author: 'William Gibson', publisher: 'Pocket', publishedYear: 1984, category: 'Science-Fiction', subcategory: 'Cyberpunk', description: 'Roman cyberpunk.', coverUrl: null, totalCopies: 3, availableCopies: 3, location: 'Rayon B', tags: ['Cyberpunk'], totalLoans: 57, createdAt: now, updatedAt: now },
 ]
 
 export const seedMembers: Member[] = []

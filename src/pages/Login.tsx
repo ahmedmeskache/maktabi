@@ -102,10 +102,7 @@ export function Login() {
             </Button>
           </form>
 
-          <div className="mt-6 p-4 rounded-2xl bg-[var(--color-bg-tertiary)] border border-[var(--color-border-primary)]">
-            <p className="text-body-xs font-semibold text-[var(--color-text-secondary)] mb-2">{t('auth.login.demoTitle')}</p>
-            <p className="text-body-xs text-[var(--color-text-muted)]">{t('auth.login.demoAdmin')}</p>
-            <p className="text-body-xs text-[var(--color-text-muted)]">{t('auth.login.demoUser')}</p>
+          <div className="mt-6 p-4 rounded-2xl bg-[var(--color-bg-tertiary)] border border-[var(--color-border-primary)] hidden">
           </div>
 
           <div className="mt-6 text-center">

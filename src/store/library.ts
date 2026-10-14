@@ -325,7 +325,7 @@ export const useLibraryStore = create<LibraryState>()(
       },
     }),
     {
-      name: 'maktabi-library-v1',
+      name: 'maktabi-library-v2',
       storage: createJSONStorage(() => safeStorage),
     }
   )

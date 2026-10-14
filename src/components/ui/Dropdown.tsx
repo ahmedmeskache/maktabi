@@ -26,14 +26,39 @@ export interface DropdownProps {
 
 export function Dropdown({ trigger, items, onSelect, selectedValue, align = 'left', className }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [coords, setCoords] = useState({ top: 0, left: 0 })
   const dropdownRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLDivElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  const updateCoords = () => {
+    const el = triggerRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const menuWidth = menuRef.current?.offsetWidth ?? 200
+    const left = align === 'right' ? rect.right - menuWidth : rect.left
+    setCoords({ top: rect.bottom + 6, left: Math.max(8, left) })
+  }
+
+  useEffect(() => {
+    if (!isOpen) return
+    updateCoords()
+    const onResize = () => updateCoords()
+    window.addEventListener('resize', onResize)
+    window.addEventListener('scroll', onResize, true)
+    return () => {
+      window.removeEventListener('resize', onResize)
+      window.removeEventListener('scroll', onResize, true)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen])
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
-      }
+      const target = event.target as Node
+      if (dropdownRef.current?.contains(target)) return
+      if (menuRef.current?.contains(target)) return
+      setIsOpen(false)
     }
 
     document.addEventListener('mousedown', handleClickOutside)
@@ -84,9 +109,10 @@ export function Dropdown({ trigger, items, onSelect, selectedValue, align = 'lef
       {isOpen && (
         <Portal>
           <div
+            ref={menuRef}
+            style={{ top: coords.top, left: coords.left }}
             className={cn(
-              'fixed z-50 mt-1.5 min-w-[200px] bg-white/90 dark:bg-[#221b12]/90 backdrop-blur-2xl rounded-xl border border-[var(--color-border-primary)] shadow-lg py-1 animate-slide-down',
-              align === 'right' ? 'right-0' : 'left-0'
+              'fixed z-50 min-w-[200px] bg-white/90 dark:bg-[#221b12]/90 backdrop-blur-2xl rounded-xl border border-[var(--color-border-primary)] shadow-lg py-1 animate-slide-down'
             )}
             role="listbox"
             aria-label="Options"
