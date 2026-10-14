@@ -1,37 +1,57 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { useUIStore } from '@/store'
+import { translate, LOCALE_BY_LANG } from '@/i18n'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+function currentLocale(): string {
+  try {
+    return LOCALE_BY_LANG[useUIStore.getState().language] ?? 'fr-FR'
+  } catch {
+    return 'fr-FR'
+  }
+}
+
+function currentLanguage() {
+  try {
+    return useUIStore.getState().language
+  } catch {
+    return 'fr' as const
+  }
+}
+
 export function formatDate(date: Date | string, format: 'short' | 'long' | 'relative' = 'short'): string {
   const d = new Date(date)
   if (isNaN(d.getTime())) return ''
+  const locale = currentLocale()
 
   if (format === 'relative') {
+    const lang = currentLanguage()
     const now = new Date()
     const diffMs = now.getTime() - d.getTime()
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
     const diffMinutes = Math.floor(diffMs / (1000 * 60))
 
-    if (diffDays > 7) return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
-    if (diffDays > 0) return `il y a ${diffDays} jour${diffDays > 1 ? 's' : ''}`
-    if (diffHours > 0) return `il y a ${diffHours} heure${diffHours > 1 ? 's' : ''}`
-    if (diffMinutes > 0) return `il y a ${diffMinutes} minute${diffMinutes > 1 ? 's' : ''}`
-    return 'à l\'instant'
+    if (diffDays > 7) return d.toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' })
+    if (diffDays > 0) return translate(lang, diffDays > 1 ? 'time.daysAgo' : 'time.dayAgo', { count: diffDays })
+    if (diffHours > 0) return translate(lang, diffHours > 1 ? 'time.hoursAgo' : 'time.hourAgo', { count: diffHours })
+    if (diffMinutes > 0) return translate(lang, diffMinutes > 1 ? 'time.minutesAgo' : 'time.minuteAgo', { count: diffMinutes })
+    return translate(lang, 'time.now')
   }
 
   const options: Intl.DateTimeFormatOptions = format === 'long'
     ? { day: 'numeric', month: 'long', year: 'numeric' }
     : { day: 'numeric', month: 'short', year: 'numeric' }
 
-  return d.toLocaleDateString('fr-FR', options)
+  return d.toLocaleDateString(locale, options)
 }
 
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('fr-DZ', {
+  return new Intl.NumberFormat(currentLocale(), {
     style: 'currency',
     currency: 'DZD',
     minimumFractionDigits: 0,

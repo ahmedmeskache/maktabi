@@ -129,13 +129,14 @@ export function Dropdown({ trigger, items, onSelect, selectedValue, align = 'lef
   )
 }
 
-export function UserMenu({ user, onProfile, onNotifications, onContact, onSettings, onLogout }: {
+export function UserMenu({ user, onProfile, onNotifications, onContact, onSettings, onLogout, labels }: {
   user: { name: string; email: string; avatar?: string; role?: string }
   onProfile: () => void
   onNotifications?: () => void
   onContact?: () => void
   onSettings: () => void
   onLogout: () => void
+  labels?: Partial<Record<'profile' | 'notifications' | 'contact' | 'settings' | 'logout', string>>
 }) {
   const handleSelect = (value: string) => {
     switch (value) {
@@ -169,12 +170,12 @@ export function UserMenu({ user, onProfile, onNotifications, onContact, onSettin
         </div>
       }
       items={[
-        { label: 'Profil', value: 'profile', icon: <User className="w-4 h-4" /> },
-        { label: 'Notifications', value: 'notifications', icon: <Bell className="w-4 h-4" /> },
-        { label: 'Contact', value: 'contact', icon: <Phone className="w-4 h-4" /> },
-        { label: 'Paramètres', value: 'settings', icon: <Settings className="w-4 h-4" /> },
+        { label: labels?.profile ?? 'Profil', value: 'profile', icon: <User className="w-4 h-4" /> },
+        { label: labels?.notifications ?? 'Notifications', value: 'notifications', icon: <Bell className="w-4 h-4" /> },
+        { label: labels?.contact ?? 'Contact', value: 'contact', icon: <Phone className="w-4 h-4" /> },
+        { label: labels?.settings ?? 'Paramètres', value: 'settings', icon: <Settings className="w-4 h-4" /> },
         { divider: true },
-        { label: 'Déconnexion', value: 'logout', icon: <LogOut className="w-4 h-4" />, danger: true },
+        { label: labels?.logout ?? 'Déconnexion', value: 'logout', icon: <LogOut className="w-4 h-4" />, danger: true },
       ]}
       onSelect={handleSelect}
       align="right"

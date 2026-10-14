@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion'
 import type { SyntheticEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { BookOpen, Check, AlertTriangle, TrendingUp, Pencil, Trash2 } from 'lucide-react'
+import { BookOpen, Check, AlertTriangle, TrendingUp, Pencil, Trash2, Archive, ArchiveRestore } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { getBookCover, fallbackCover } from '@/lib/utils'
+import { useTranslation } from '@/i18n'
 import type { Book } from '@/types'
 
 interface BookCardProps {
@@ -13,9 +14,11 @@ interface BookCardProps {
   index?: number
   onEdit?: (book: Book) => void
   onDelete?: (book: Book) => void
+  onArchive?: (book: Book) => void
 }
 
-export function BookCard({ book, variant = 'grid', index = 0, onEdit, onDelete }: BookCardProps) {
+export function BookCard({ book, variant = 'grid', index = 0, onEdit, onDelete, onArchive }: BookCardProps) {
+  const { t } = useTranslation()
   const coverUrl = getBookCover(book)
 
   const handleImgError = (e: SyntheticEvent<HTMLImageElement>) => {
@@ -48,7 +51,7 @@ export function BookCard({ book, variant = 'grid', index = 0, onEdit, onDelete }
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               {!isAvailable && (
                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                  <Badge variant="danger" className="text-xs">Indisponible</Badge>
+                  <Badge variant="danger" className="text-xs">{t('books.unavailable')}</Badge>
                 </div>
               )}
             </div>
@@ -75,7 +78,7 @@ export function BookCard({ book, variant = 'grid', index = 0, onEdit, onDelete }
                 </>
               ) : (
                 <>
-                  <AlertTriangle className="w-3 h-3 mr-1" /> Rupture
+                  <AlertTriangle className="w-3 h-3 mr-1" /> {t('books.outOfStock')}
                 </>
               )}
             </Badge>
@@ -83,16 +86,21 @@ export function BookCard({ book, variant = 'grid', index = 0, onEdit, onDelete }
         </td>
         <td className="py-4 px-6">
           <div className="flex items-center gap-1">
-            <Link to={`/books/${book.id}`} className="p-2 rounded-xl hover:bg-[var(--color-bg-tertiary)] transition-colors text-[var(--color-text-muted)] hover:text-primary-500" aria-label="Voir détails">
+            <Link to={`/books/${book.id}`} className="p-2 rounded-xl hover:bg-[var(--color-bg-tertiary)] transition-colors text-[var(--color-text-muted)] hover:text-primary-500" aria-label={t('books.viewDetailsAria')}>
               <BookOpen className="w-4 h-4" />
             </Link>
             {onEdit && (
-              <button onClick={() => onEdit(book)} className="p-2 rounded-xl hover:bg-[var(--color-bg-tertiary)] transition-colors text-[var(--color-text-muted)] hover:text-primary-500" aria-label="Modifier">
+              <button onClick={() => onEdit(book)} className="p-2 rounded-xl hover:bg-[var(--color-bg-tertiary)] transition-colors text-[var(--color-text-muted)] hover:text-primary-500" aria-label={t('books.editAria')}>
                 <Pencil className="w-4 h-4" />
               </button>
             )}
+            {onArchive && (
+              <button onClick={() => onArchive(book)} className="p-2 rounded-xl hover:bg-[var(--color-bg-tertiary)] transition-colors text-[var(--color-text-muted)] hover:text-amber-500" aria-label={book.archived ? t('books.restoreAria') : t('books.archiveAria')}>
+                {book.archived ? <ArchiveRestore className="w-4 h-4" /> : <Archive className="w-4 h-4" />}
+              </button>
+            )}
             {onDelete && (
-              <button onClick={() => onDelete(book)} className="p-2 rounded-xl hover:bg-[var(--color-bg-tertiary)] transition-colors text-[var(--color-text-muted)] hover:text-red-500" aria-label="Supprimer">
+              <button onClick={() => onDelete(book)} className="p-2 rounded-xl hover:bg-[var(--color-bg-tertiary)] transition-colors text-[var(--color-text-muted)] hover:text-red-500" aria-label={t('books.deleteAria')}>
                 <Trash2 className="w-4 h-4" />
               </button>
             )}
@@ -125,11 +133,11 @@ export function BookCard({ book, variant = 'grid', index = 0, onEdit, onDelete }
               <Badge variant={isAvailable ? 'success' : 'danger'} className="text-xs px-2 py-1">
                 {isAvailable ? (
                   <>
-                    <Check className="w-3 h-3 mr-1" /> {book.availableCopies} dispo
+                    <Check className="w-3 h-3 mr-1" /> {t('books.availableShort', { count: book.availableCopies })}
                   </>
                 ) : (
                   <>
-                    <AlertTriangle className="w-3 h-3 mr-1" /> Rupture
+                    <AlertTriangle className="w-3 h-3 mr-1" /> {t('books.outOfStock')}
                   </>
                 )}
               </Badge>
@@ -141,16 +149,25 @@ export function BookCard({ book, variant = 'grid', index = 0, onEdit, onDelete }
                   <button
                     onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(book) }}
                     className="p-1.5 rounded-lg bg-white/90 dark:bg-[#17120c]/90 text-[var(--color-text-secondary)] hover:text-primary-500 shadow"
-                    aria-label="Modifier"
+                    aria-label={t('books.editAria')}
                   >
                     <Pencil className="w-3.5 h-3.5" />
+                  </button>
+                )}
+                {onArchive && (
+                  <button
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); onArchive(book) }}
+                    className="p-1.5 rounded-lg bg-white/90 dark:bg-[#17120c]/90 text-[var(--color-text-secondary)] hover:text-amber-500 shadow"
+                    aria-label={book.archived ? t('books.restoreAria') : t('books.archiveAria')}
+                  >
+                    {book.archived ? <ArchiveRestore className="w-3.5 h-3.5" /> : <Archive className="w-3.5 h-3.5" />}
                   </button>
                 )}
                 {onDelete && (
                   <button
                     onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(book) }}
                     className="p-1.5 rounded-lg bg-white/90 dark:bg-[#17120c]/90 text-[var(--color-text-secondary)] hover:text-red-500 shadow"
-                    aria-label="Supprimer"
+                    aria-label={t('books.deleteAria')}
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -163,7 +180,7 @@ export function BookCard({ book, variant = 'grid', index = 0, onEdit, onDelete }
               {book.totalLoans && book.totalLoans > 50 && (
                 <Badge variant="warning" className="text-xs px-2 py-1 flex items-center gap-1">
                   <TrendingUp className="w-3 h-3" />
-                  Populaire
+                  {t('books.popular')}
                 </Badge>
               )}
             </div>

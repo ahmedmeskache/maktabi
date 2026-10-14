@@ -5,6 +5,7 @@ import { Bell, Clock, CheckCheck, Trash2, Check } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils'
+import { useTranslation } from '@/i18n'
 
 interface AppNotification {
   id: number
@@ -14,15 +15,14 @@ interface AppNotification {
   read: boolean
 }
 
-const initialNotifications: AppNotification[] = [
-  { id: 1, title: 'Retour en retard', message: 'Le livre "Le Petit Prince" est en retard de 3 jours', time: 'Il y a 5 min', read: false },
-  { id: 2, title: 'Nouveau membre', message: 'Marie Dubois s\'est inscrite', time: 'Il y a 1 heure', read: false },
-  { id: 3, title: 'Réservation prête', message: '"1984" est disponible pour Jean Martin', time: 'Il y a 2 heures', read: true },
-  { id: 4, title: 'Amende impayée', message: 'Une amende de 150 DA est en attente pour Luc Bernard', time: 'Hier', read: true },
-]
-
 export function Notifications() {
-  const [notifications, setNotifications] = useState(initialNotifications)
+  const { t } = useTranslation()
+  const [notifications, setNotifications] = useState<AppNotification[]>(() => [
+    { id: 1, title: t('misc.notifications.overdue.title'), message: t('misc.notifications.overdue.message', { title: 'Le Petit Prince' }), time: t('misc.notifications.overdue.time'), read: false },
+    { id: 2, title: t('misc.notifications.member.title'), message: t('misc.notifications.member.message', { name: 'Marie Dubois' }), time: t('misc.notifications.member.time'), read: false },
+    { id: 3, title: t('misc.notifications.reservation.title'), message: t('misc.notifications.reservation.message', { title: '1984', name: 'Jean Martin' }), time: t('misc.notifications.reservation.time'), read: true },
+    { id: 4, title: t('misc.notifications.fine.title'), message: t('misc.notifications.fine.message', { name: 'Luc Bernard' }), time: t('misc.notifications.fine.time'), read: true },
+  ])
   const [filter, setFilter] = useState<'all' | 'unread'>('all')
 
   const unread = notifications.filter((n) => !n.read).length
@@ -30,7 +30,7 @@ export function Notifications() {
 
   const markAllRead = () => {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
-    toast.success('Toutes les notifications sont marquées comme lues')
+    toast.success(t('misc.notifications.allRead'))
   }
 
   const markRead = (id: number) => {
@@ -45,18 +45,20 @@ export function Notifications() {
     <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-display-sm font-bold text-[var(--color-text-primary)]">Notifications</h1>
+          <h1 className="text-display-sm font-bold text-[var(--color-text-primary)]">{t('misc.notifications.title')}</h1>
           <p className="text-body-md text-[var(--color-text-secondary)] mt-1">
-            {unread > 0 ? `${unread} notification${unread > 1 ? 's' : ''} non lue${unread > 1 ? 's' : ''}` : 'Vous êtes à jour'}
+            {unread > 0
+              ? (unread > 1 ? t('misc.notifications.unreadCountPlural', { count: unread }) : t('misc.notifications.unreadCount', { count: unread }))
+              : t('misc.notifications.upToDate')}
           </p>
         </div>
         <Button variant="outline" onClick={markAllRead} disabled={unread === 0}>
-          <CheckCheck className="w-4 h-4 mr-1" /> Tout marquer comme lu
+          <CheckCheck className="w-4 h-4 ms-1" /> {t('misc.notifications.markAllRead')}
         </Button>
       </div>
 
       <div className="flex items-center gap-2">
-        {([['all', 'Toutes'], ['unread', 'Non lues']] as const).map(([value, label]) => (
+        {([['all', t('misc.notifications.filterAll')], ['unread', t('misc.notifications.filterUnread')]] as const).map(([value, label]) => (
           <button
             key={value}
             onClick={() => setFilter(value)}
@@ -77,7 +79,7 @@ export function Notifications() {
           {visible.length === 0 ? (
             <div className="p-12 text-center">
               <Bell className="w-10 h-12 mx-auto text-[var(--color-text-muted)] mb-3" />
-              <p className="text-[var(--color-text-secondary)]">Aucune notification</p>
+              <p className="text-[var(--color-text-secondary)]">{t('misc.notifications.empty')}</p>
             </div>
           ) : (
             <div className="divide-y divide-[var(--color-border-primary)]">
@@ -101,11 +103,11 @@ export function Notifications() {
                   </div>
                   <div className="flex items-center gap-1">
                     {!n.read && (
-                      <button onClick={() => markRead(n.id)} className="p-2 rounded-xl text-[var(--color-text-muted)] hover:text-primary-500 hover:bg-[var(--color-bg-tertiary)] transition-colors" aria-label="Marquer comme lu">
+                      <button onClick={() => markRead(n.id)} className="p-2 rounded-xl text-[var(--color-text-muted)] hover:text-primary-500 hover:bg-[var(--color-bg-tertiary)] transition-colors" aria-label={t('misc.notifications.markRead')}>
                         <Check className="w-4 h-4" />
                       </button>
                     )}
-                    <button onClick={() => remove(n.id)} className="p-2 rounded-xl text-[var(--color-text-muted)] hover:text-red-500 hover:bg-[var(--color-bg-tertiary)] transition-colors" aria-label="Supprimer">
+                    <button onClick={() => remove(n.id)} className="p-2 rounded-xl text-[var(--color-text-muted)] hover:text-red-500 hover:bg-[var(--color-bg-tertiary)] transition-colors" aria-label={t('common.delete')}>
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
@@ -118,7 +120,7 @@ export function Notifications() {
 
       {notifications.length === 0 && (
         <p className="text-center text-body-sm text-[var(--color-text-muted)] flex items-center justify-center gap-2">
-          <Bell className="w-4 h-4" /> Aucune notification pour le moment
+          <Bell className="w-4 h-4" /> {t('misc.notifications.emptyAll')}
         </p>
       )}
     </div>

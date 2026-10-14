@@ -3,13 +3,17 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { useUIStore } from '@/store'
+import { useAuthStore } from '@/store/auth'
+import { useTranslation, LANGUAGES, type Language } from '@/i18n'
 import { Button } from '@/components/ui/Button'
-import { UserMenu } from '@/components/ui/Dropdown'
-import { Search, Bell, Sun, Moon, Command } from 'lucide-react'
+import { Dropdown, UserMenu } from '@/components/ui/Dropdown'
+import { Search, Bell, Sun, Moon, Command, Languages } from 'lucide-react'
 import { toast } from 'sonner'
 
 export function Header() {
-  const { theme, setTheme } = useUIStore()
+  const { theme, setTheme, language, setLanguage } = useUIStore()
+  const { t } = useTranslation()
+  const { currentUser, logout } = useAuthStore()
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
   const [showNotifications, setShowNotifications] = useState(false)
@@ -47,27 +51,34 @@ export function Header() {
   }, [])
 
   const notifications = [
-    { id: 1, title: 'Retour en retard', message: 'Le livre "Le Petit Prince" est en retard de 3 jours', time: 'Il y a 5 min', read: false },
-    { id: 2, title: 'Nouveau membre', message: 'Marie Dubois s\'est inscrite', time: 'Il y a 1 heure', read: false },
-    { id: 3, title: 'Reservation prête', message: '"1984" est disponible pour Jean Martin', time: 'Il y a 2 heures', read: true },
+    { id: 1, title: t('demo.notif.overdue.title'), message: t('demo.notif.overdue.message'), time: t('demo.notif.overdue.time'), read: false },
+    { id: 2, title: t('demo.notif.member.title'), message: t('demo.notif.member.message'), time: t('demo.notif.member.time'), read: false },
+    { id: 3, title: t('demo.notif.reservation.title'), message: t('demo.notif.reservation.message'), time: t('demo.notif.reservation.time'), read: true },
   ]
+
+  const handleLogout = () => {
+    setShowProfile(false)
+    logout()
+    toast.success(t('layout.logoutSuccess'))
+    navigate('/login', { replace: true })
+  }
 
   return (
     <header className="sticky top-0 z-30 bg-white/55 dark:bg-[#221b12]/55 backdrop-blur-2xl border-b border-[var(--color-border-primary)]/60">
       <div className="mx-auto flex h-16 w-full max-w-[1600px] items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4 flex-1 min-w-0">
             <form className="relative hidden sm:block w-80 max-w-md" onSubmit={(e) => { e.preventDefault(); const q = searchQuery.trim(); navigate(q ? `/books?q=${encodeURIComponent(q)}` : '/books') }}>
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" />
+              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" />
               <input
                 ref={searchRef}
                 type="search"
-                placeholder="Rechercher livres, adhérents... (⌘K)"
+                placeholder={t('layout.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-16 py-2.5 bg-white/60 dark:bg-[#221b12]/50 backdrop-blur-md border border-[var(--color-border-primary)] rounded-full text-body-sm text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500/50 focus:bg-white dark:focus:bg-[#221b12] transition-all shadow-sm"
-                aria-label="Recherche globale"
+                className="w-full ps-10 pe-16 py-2.5 bg-white/60 dark:bg-[#221b12]/50 backdrop-blur-md border border-[var(--color-border-primary)] rounded-full text-body-sm text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500/50 focus:bg-white dark:focus:bg-[#221b12] transition-all shadow-sm"
+                aria-label={t('layout.searchAria')}
               />
-              <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 px-2 py-1 text-body-xs text-slate-400 bg-slate-200 dark:bg-slate-700 rounded-full">
+              <kbd className="absolute end-3 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 px-2 py-1 text-body-xs text-slate-400 bg-slate-200 dark:bg-slate-700 rounded-full">
                 <Command className="w-3 h-3" />
                 <span>K</span>
               </kbd>
@@ -75,12 +86,23 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2 ml-4">
+          <Dropdown
+            trigger={
+              <Button variant="ghost" size="sm" aria-label={t('layout.switchLanguage')}>
+                <Languages className="w-5 h-5" />
+              </Button>
+            }
+            items={LANGUAGES.map((l) => ({ label: l.label, value: l.value }))}
+            onSelect={(value) => setLanguage(value as Language)}
+            selectedValue={language}
+            align="right"
+          />
+
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            aria-label={theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
-            className="lg:hidden"
+            aria-label={theme === 'dark' ? t('layout.light') : t('layout.dark')}
           >
             {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </Button>
@@ -90,11 +112,11 @@ export function Header() {
               variant="ghost"
               size="sm"
               onClick={() => setShowNotifications(!showNotifications)}
-              aria-label="Notifications"
+              aria-label={t('layout.notifications')}
               aria-expanded={showNotifications}
             >
               <Bell className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-medium rounded-full flex items-center justify-center">3</span>
+              <span className="absolute -top-1 -right-1 rtl:-right-auto rtl:-left-1 w-4 h-4 bg-red-500 text-white text-[10px] font-medium rounded-full flex items-center justify-center">3</span>
             </Button>
 
             <AnimatePresence>
@@ -103,13 +125,13 @@ export function Header() {
                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  className="absolute right-0 mt-2 w-80 sm:w-96 bg-white/90 dark:bg-[#221b12]/90 backdrop-blur-2xl rounded-xl border border-[var(--color-border-primary)] shadow-xl overflow-hidden"
+                  className="absolute end-0 mt-2 w-80 sm:w-96 bg-white/90 dark:bg-[#221b12]/90 backdrop-blur-2xl rounded-xl border border-[var(--color-border-primary)] shadow-xl overflow-hidden"
                   role="region"
-                  aria-label="Notifications"
+                  aria-label={t('layout.notifications')}
                 >
                   <div className="p-4 border-b border-[var(--color-border-primary)] flex items-center justify-between">
-                    <h3 className="font-semibold text-slate-900 dark:text-white">Notifications</h3>
-                    <Button variant="ghost" size="sm" className="text-body-xs" onClick={() => { toast.success('Toutes les notifications sont marquées comme lues'); setShowNotifications(false) }}>Tout marquer lu</Button>
+                    <h3 className="font-semibold text-slate-900 dark:text-white">{t('layout.notifications')}</h3>
+                    <Button variant="ghost" size="sm" className="text-body-xs" onClick={() => { toast.success(t('layout.allRead')); setShowNotifications(false) }}>{t('layout.markAllRead')}</Button>
                   </div>
                   <div className="max-h-96 overflow-y-auto">
                     {notifications.map((notification) => (
@@ -135,7 +157,7 @@ export function Header() {
                   </div>
                   <div className="p-3 border-t border-[var(--color-border-primary)] text-center">
                     <Link to="/notifications" onClick={() => setShowNotifications(false)} className="text-body-sm text-brand-600 dark:text-brand-400 hover:underline">
-                      Voir toutes les notifications
+                      {t('layout.viewAllNotifications')}
                     </Link>
                   </div>
                 </motion.div>
@@ -143,28 +165,25 @@ export function Header() {
             </AnimatePresence>
           </div>
 
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            aria-label={theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
-            className="hidden lg:flex"
-          >
-            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </Button>
-
           <div className="relative" ref={profileRef}>
             <UserMenu
               user={{
-                name: 'Bibliothécaire',
-                email: 'admin@maktabi.fr',
+                name: currentUser?.name ?? 'Maktabi',
+                email: currentUser?.email ?? '',
                 avatar: undefined,
+              }}
+              labels={{
+                profile: t('layout.profile'),
+                notifications: t('layout.notifications'),
+                contact: t('layout.contact'),
+                settings: t('layout.settingsMenu'),
+                logout: t('layout.logout'),
               }}
               onProfile={() => { setShowProfile(false); navigate('/profile') }}
               onNotifications={() => { setShowProfile(false); navigate('/notifications') }}
               onContact={() => { setShowProfile(false); navigate('/contact') }}
               onSettings={() => { setShowProfile(false); navigate('/settings') }}
-              onLogout={() => { setShowProfile(false); toast.success('Vous avez été déconnecté'); navigate('/') }}
+              onLogout={handleLogout}
             />
           </div>
         </div>

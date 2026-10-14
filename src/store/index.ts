@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage, StateStorage } from 'zustand/middleware'
 import type { Theme, ViewMode } from '@/types'
+import type { Language } from '@/i18n'
 
 const safeStorage: StateStorage = {
   getItem: (name: string) => {
@@ -28,28 +29,46 @@ const safeStorage: StateStorage = {
 
 interface UIState {
   theme: Theme
+  language: Language
   sidebarOpen: boolean
   commandPaletteOpen: boolean
   viewMode: ViewMode
+  notificationPrefs: Record<string, boolean>
+  lastBackup: string | null
   setTheme: (theme: Theme) => void
+  setLanguage: (language: Language) => void
   toggleSidebar: () => void
   setSidebarOpen: (open: boolean) => void
   toggleCommandPalette: () => void
   setViewMode: (mode: ViewMode) => void
+  setNotificationPref: (key: string, value: boolean) => void
+  setLastBackup: (date: string) => void
 }
 
 export const useUIStore = create<UIState>()(
   persist(
     (set) => ({
       theme: 'system',
+      language: 'fr',
       sidebarOpen: true,
       commandPaletteOpen: false,
       viewMode: 'grid',
+      notificationPrefs: {
+        loans: true,
+        returns: true,
+        reservations: true,
+        members: true,
+        reports: false,
+      },
+      lastBackup: null,
       setTheme: (theme) => set({ theme }),
+      setLanguage: (language) => set({ language }),
       toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
       setSidebarOpen: (open) => set({ sidebarOpen: open }),
       toggleCommandPalette: () => set((state) => ({ commandPaletteOpen: !state.commandPaletteOpen })),
       setViewMode: (mode) => set({ viewMode: mode }),
+      setNotificationPref: (key, value) => set((state) => ({ notificationPrefs: { ...state.notificationPrefs, [key]: value } })),
+      setLastBackup: (date) => set({ lastBackup: date }),
     }),
     {
       name: 'maktabi-ui',

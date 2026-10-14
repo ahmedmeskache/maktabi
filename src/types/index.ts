@@ -14,6 +14,7 @@ export interface Book {
   location?: string
   tags: string[]
   totalLoans?: number
+  archived?: boolean
   createdAt: string
   updatedAt: string
 }
@@ -101,6 +102,31 @@ export interface ChartData {
   popularBooks: { title: string; loans: number }[]
   memberActivity: { month: string; active: number; new: number }[]
   overdueTrend: { date: string; count: number }[]
+}
+
+export interface AppUser {
+  id: string
+  name: string
+  email: string
+  password: string
+  phone?: string
+  library?: string
+  role: 'admin' | 'user'
+  isActive: boolean
+  twoFactor: boolean
+  createdAt: string
+}
+
+export type HistoryEntity = 'book' | 'member' | 'loan' | 'user' | 'category' | 'auth' | 'settings'
+
+export interface HistoryEntry {
+  id: string
+  action: string
+  entityType: HistoryEntity
+  entityLabel: string
+  details?: string
+  userName: string
+  createdAt: string
 }
 
 export type ViewMode = 'grid' | 'list' | 'table'

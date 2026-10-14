@@ -90,6 +90,17 @@
     letter-spacing: -0.01em;
   }
 
+  [lang="ar"] body,
+  [dir="rtl"] body {
+    font-family: 'Cairo', 'Inter', system-ui, sans-serif;
+  }
+
+  [lang="ar"] h1, [lang="ar"] h2, [lang="ar"] h3, [lang="ar"] h4, [lang="ar"] .font-display,
+  [dir="rtl"] .font-display {
+    font-family: 'Cairo', 'Playfair Display', serif;
+    letter-spacing: 0;
+  }
+
   * {
     @apply border-[var(--color-border-primary)];
   }
