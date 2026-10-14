@@ -45,7 +45,7 @@ const seedUsers: AppUser[] = [
   },
   {
     id: 'user-reader',
-    name: 'Jean Martin',
+    name: 'lecteur 1',
     email: 'lecteur@maktabi.fr',
     password: 'user123',
     phone: '+33 6 12 34 56 78',
@@ -70,6 +70,9 @@ interface AuthState {
   changePassword: (current: string, next: string) => { ok: boolean; error?: string }
   setTwoFactor: (enabled: boolean) => void
   resetUsers: () => void
+  eraseLecteurs: () => void
+  eraseAdmins: () => void
+  eraseAllUsers: () => void
 }
 
 function log(action: string, entityType: HistoryEntity, entityLabel: string, details?: string) {
@@ -192,9 +195,20 @@ export const useAuthStore = create<AuthState>()(
       },
 
       resetUsers: () => set({ users: seedUsers }),
+      eraseLecteurs: () => {
+        set((s) => ({ users: s.users.filter((u) => u.role !== 'user') }))
+      },
+      eraseAdmins: () => {
+        const currentId = get().currentUser?.id
+        set((s) => ({ users: s.users.filter((u) => u.role !== 'admin' || u.id === currentId) }))
+      },
+      eraseAllUsers: () => {
+        const currentId = get().currentUser?.id
+        set((s) => ({ users: s.users.filter((u) => u.id === currentId) }))
+      },
     }),
     {
-      name: 'maktabi-auth',
+      name: 'maktabi-auth-v2',
       storage: createJSONStorage(() => safeStorage),
     }
   )

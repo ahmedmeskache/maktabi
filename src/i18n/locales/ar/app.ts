@@ -188,6 +188,15 @@ const arApp: Record<string, string> = {
   'users.activate': 'تفعيل',
   'users.empty': 'لم يتم العثور على مستخدم',
   'users.self': 'أنت',
+  'users.dangerZone': 'منطقة الخطر',
+  'users.dangerHint': 'هذه الإجراءات لا رجعة فيها.',
+  'users.eraseLecteurs': 'مسح جميع القرّاء',
+  'users.eraseAdmins': 'مسح جميع المدراء',
+  'users.eraseAll': 'مسح جميع المستخدمين',
+  'users.eraseLecteursConfirm': 'حذف جميع حسابات القرّاء نهائيًا؟',
+  'users.eraseAdminsConfirm': 'حذف جميع حسابات المدراء نهائيًا (باستثناء حسابك)؟',
+  'users.eraseAllConfirm': 'حذف جميع المستخدمين نهائيًا باستثناء حسابك؟',
+  'users.erased': 'تم حذف الحسابات',
 
   // Categories
   'categories.title': 'التصنيفات',

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useLocation, NavLink } from 'react-router-dom'
+import { Link, useLocation, NavLink, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { useUIStore } from '@/store'
@@ -19,6 +19,7 @@ import {
   BookMarked,
   Tags,
   History,
+  LogOut,
 } from 'lucide-react'
 
 const navigation = [
@@ -36,7 +37,9 @@ const navigation = [
 export function Sidebar() {
   const { sidebarOpen, setSidebarOpen, toggleSidebar } = useUIStore()
   const { t } = useTranslation()
-  const isAdmin = useAuthStore((s) => s.currentUser?.role === 'admin')
+  const { currentUser, logout } = useAuthStore()
+  const isAdmin = currentUser?.role === 'admin'
+  const navigate = useNavigate()
   const location = useLocation()
   const [collapsed, setCollapsed] = useState(false)
 
@@ -127,6 +130,19 @@ export function Sidebar() {
                 <p className="font-semibold text-slate-900 dark:text-white truncate">{t('layout.version')}</p>
                 <p className="text-slate-500 dark:text-slate-400 truncate">{t('layout.description')}</p>
               </div>
+              {currentUser && (
+                <button
+                  onClick={() => { logout(); navigate('/login') }}
+                  className={cn(
+                    'mt-2 w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-body-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all',
+                    collapsed && 'justify-center'
+                  )}
+                  aria-label={t('layout.logout')}
+                >
+                  <LogOut className="w-5 h-5" aria-hidden="true" />
+                  {!collapsed && <span>{t('layout.logout')}</span>}
+                </button>
+              )}
             </div>
           </motion.aside>
         ) : null}

@@ -7,7 +7,7 @@ import { useAuthStore } from '@/store/auth'
 import { useTranslation, LANGUAGES, type Language } from '@/i18n'
 import { Button } from '@/components/ui/Button'
 import { Dropdown, UserMenu } from '@/components/ui/Dropdown'
-import { Search, Bell, Sun, Moon, Command, Languages } from 'lucide-react'
+import { Search, Bell, Sun, Moon, Command, Languages, LogOut } from 'lucide-react'
 import { toast } from 'sonner'
 
 export function Header() {
@@ -195,6 +195,12 @@ export function Header() {
               onLogout={handleLogout}
             />
           </div>
+
+          {currentUser && (
+            <Button variant="ghost" size="sm" onClick={handleLogout} aria-label={t('layout.logout')} title={t('layout.logout')}>
+              <LogOut className="w-5 h-5" />
+            </Button>
+          )}
         </div>
       </div>
     </header>

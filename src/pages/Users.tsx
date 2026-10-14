@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
-import { UserPlus, Pencil, Trash2, Power, Search, Shield, User as UserIcon } from 'lucide-react'
+import { UserPlus, Pencil, Trash2, Power, Search, Shield, User as UserIcon, AlertTriangle, Eraser } from 'lucide-react'
 import { toast } from 'sonner'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -24,13 +24,14 @@ const emptyForm: FormState = { name: '', email: '', phone: '', password: '', rol
 
 export function Users() {
   const { t } = useTranslation()
-  const { users, currentUser, addUser, updateUser, deleteUser, setUserActive } = useAuthStore()
+  const { users, currentUser, addUser, updateUser, deleteUser, setUserActive, eraseLecteurs, eraseAdmins, eraseAllUsers } = useAuthStore()
   const [search, setSearch] = useState('')
   const [modalOpen, setModalOpen] = useState(false)
   const [editing, setEditing] = useState<AppUser | null>(null)
   const [form, setForm] = useState<FormState>(emptyForm)
   const [formError, setFormError] = useState('')
   const [deleteTarget, setDeleteTarget] = useState<AppUser | null>(null)
+  const [eraseTarget, setEraseTarget] = useState<'lecteurs' | 'admins' | 'all' | null>(null)
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
@@ -95,6 +96,14 @@ export function Users() {
     toast.success(t('users.statusChanged'))
   }
 
+  const confirmErase = () => {
+    if (eraseTarget === 'lecteurs') eraseLecteurs()
+    else if (eraseTarget === 'admins') eraseAdmins()
+    else if (eraseTarget === 'all') eraseAllUsers()
+    toast.success(t('users.erased'))
+    setEraseTarget(null)
+  }
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -151,6 +160,36 @@ export function Users() {
           </motion.div>
         ))}
       </div>
+
+      <Card className="p-5 border-red-200 dark:border-red-900/40">
+        <div className="flex items-center gap-2 mb-1">
+          <AlertTriangle className="w-5 h-5 text-red-500" />
+          <h2 className="font-semibold text-[var(--color-text-primary)]">{t('users.dangerZone')}</h2>
+        </div>
+        <p className="text-body-sm text-[var(--color-text-muted)] mb-4">{t('users.dangerHint')}</p>
+        <div className="flex flex-wrap gap-3">
+          <Button variant="outline" className="text-red-600 border-red-300 dark:border-red-900/50" onClick={() => setEraseTarget('lecteurs')}>
+            <Eraser className="w-4 h-4" /> {t('users.eraseLecteurs')}
+          </Button>
+          <Button variant="outline" className="text-red-600 border-red-300 dark:border-red-900/50" onClick={() => setEraseTarget('admins')}>
+            <Eraser className="w-4 h-4" /> {t('users.eraseAdmins')}
+          </Button>
+          <Button variant="danger" onClick={() => setEraseTarget('all')}>
+            <Trash2 className="w-4 h-4" /> {t('users.eraseAll')}
+          </Button>
+        </div>
+      </Card>
+
+      <ConfirmModal
+        isOpen={!!eraseTarget}
+        onClose={() => setEraseTarget(null)}
+        onConfirm={confirmErase}
+        title={t('users.dangerZone')}
+        message={eraseTarget === 'admins' ? t('users.eraseAdminsConfirm') : eraseTarget === 'all' ? t('users.eraseAllConfirm') : t('users.eraseLecteursConfirm')}
+        confirmText={t('common.delete')}
+        cancelText={t('common.cancel')}
+        variant="danger"
+      />
 
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('users.edit') : t('users.add')}>
         <div className="space-y-4">

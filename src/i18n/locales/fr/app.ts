@@ -188,6 +188,15 @@ const frApp: Record<string, string> = {
   'users.activate': 'Activer',
   'users.empty': 'Aucun utilisateur trouvé',
   'users.self': 'Vous',
+  'users.dangerZone': 'Zone de danger',
+  'users.dangerHint': 'Ces actions sont irréversibles.',
+  'users.eraseLecteurs': 'Effacer tous les lecteurs',
+  'users.eraseAdmins': "Effacer tous les admins",
+  'users.eraseAll': 'Effacer tous les utilisateurs',
+  'users.eraseLecteursConfirm': 'Supprimer définitivement tous les comptes lecteurs ?',
+  'users.eraseAdminsConfirm': 'Supprimer définitivement tous les comptes administrateurs (sauf le vôtre) ?',
+  'users.eraseAllConfirm': 'Supprimer définitivement tous les utilisateurs sauf votre compte ?',
+  'users.erased': 'Comptes supprimés',
 
   // Categories
   'categories.title': 'Catégories',
@@ -289,7 +298,7 @@ const frApp: Record<string, string> = {
   'demo.notif.member.message': 'Marie Dubois s\'est inscrite',
   'demo.notif.member.time': 'Il y a 1 heure',
   'demo.notif.reservation.title': 'Réservation prête',
-  'demo.notif.reservation.message': '« 1984 » est disponible pour Jean Martin',
+  'demo.notif.reservation.message': '« 1984 » est disponible pour lecteur 1',
   'demo.notif.reservation.time': 'Il y a 2 heures',
 
   // Shared loan errors

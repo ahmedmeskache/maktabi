@@ -188,6 +188,15 @@ const enApp: Record<string, string> = {
   'users.activate': 'Activate',
   'users.empty': 'No user found',
   'users.self': 'You',
+  'users.dangerZone': 'Danger zone',
+  'users.dangerHint': 'These actions are irreversible.',
+  'users.eraseLecteurs': 'Erase all readers',
+  'users.eraseAdmins': 'Erase all admins',
+  'users.eraseAll': 'Erase all users',
+  'users.eraseLecteursConfirm': 'Permanently delete all reader accounts?',
+  'users.eraseAdminsConfirm': 'Permanently delete all admin accounts (except yours)?',
+  'users.eraseAllConfirm': 'Permanently delete all users except your account?',
+  'users.erased': 'Accounts deleted',
 
   // Categories
   'categories.title': 'Categories',
@@ -289,7 +298,7 @@ const enApp: Record<string, string> = {
   'demo.notif.member.message': 'Marie Dubois just registered',
   'demo.notif.member.time': '1 hour ago',
   'demo.notif.reservation.title': 'Reservation ready',
-  'demo.notif.reservation.message': '"1984" is available for Jean Martin',
+  'demo.notif.reservation.message': '"1984" is available for lecteur 1',
   'demo.notif.reservation.time': '2 hours ago',
 
   // Shared loan errors

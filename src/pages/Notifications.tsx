@@ -20,7 +20,7 @@ export function Notifications() {
   const [notifications, setNotifications] = useState<AppNotification[]>(() => [
     { id: 1, title: t('misc.notifications.overdue.title'), message: t('misc.notifications.overdue.message', { title: 'Le Petit Prince' }), time: t('misc.notifications.overdue.time'), read: false },
     { id: 2, title: t('misc.notifications.member.title'), message: t('misc.notifications.member.message', { name: 'Marie Dubois' }), time: t('misc.notifications.member.time'), read: false },
-    { id: 3, title: t('misc.notifications.reservation.title'), message: t('misc.notifications.reservation.message', { title: '1984', name: 'Jean Martin' }), time: t('misc.notifications.reservation.time'), read: true },
+    { id: 3, title: t('misc.notifications.reservation.title'), message: t('misc.notifications.reservation.message', { title: '1984', name: 'lecteur 1' }), time: t('misc.notifications.reservation.time'), read: true },
     { id: 4, title: t('misc.notifications.fine.title'), message: t('misc.notifications.fine.message', { name: 'Luc Bernard' }), time: t('misc.notifications.fine.time'), read: true },
   ])
   const [filter, setFilter] = useState<'all' | 'unread'>('all')
